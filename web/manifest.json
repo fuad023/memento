@@ -1,6 +1,6 @@
 {
-    "name": "memento",
-    "short_name": "memento",
+    "name": "Memento",
+    "short_name": "Memento",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
