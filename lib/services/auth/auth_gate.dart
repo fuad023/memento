@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:memento/credential.dart';
 
 import 'package:memento/pages/home_page.dart';
 import 'package:memento/services/auth/login_or_register.dart';
@@ -15,7 +16,7 @@ class AuthGate extends StatelessWidget {
         builder: (context, snapshot) {
           // user is logged in
           if (snapshot.hasData) {
-            return const HomePage(hostID: "Kq5C9ykBe0cPyOMHEdz12qYkmr92");
+            return HomePage(hostID: Credential.HOST_UID_FUAD);
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {

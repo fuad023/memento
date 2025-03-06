@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memento/services/auth/auth_service.dart';
 import 'package:memento/pages/settings_page.dart';
 import 'package:memento/pages/delete_anons_page.dart';
+import 'package:memento/credential.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -15,6 +16,8 @@ class _MyDrawerState extends State<MyDrawer> {
   bool isTerminating = false;
   final _auth = AuthService();
   final _firestore = FirebaseFirestore.instance;
+  final String hostEmail = Credential.HOST_EMAIL_FUAD;
+  final String password = Credential.PASSWORD;
 
   void logout() {
     _auth.signOut();
@@ -36,14 +39,14 @@ class _MyDrawerState extends State<MyDrawer> {
     try {
       String uid = '';
       try {
-        DocumentSnapshot docSnap = await _firestore.collection('users').doc('fuad@seele.com').get();
+        DocumentSnapshot docSnap = await _firestore.collection('users').doc(hostEmail).get();
         if (docSnap.exists) {
           uid = docSnap.get('uid');
         }
       } catch (e) { throw Exception('Error retrieving fuad email: $e'); }
       await _auth.signInCode(uid);
     } catch (e) {
-      await _auth.signUp('fuad@seele.com', '12345678', 0);
+      await _auth.signUp(hostEmail, password, 0);
       throw Exception("Sign in error to host (fuad): $e");
     }
   }
@@ -111,7 +114,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 Column(
                   children: [
-                    if (_auth.getCurrentUser()!.email! != 'fuad@seele.com') _listTile(context, 'T E R M I N A T E', Icons.delete_forever, terminate, caution: true),
+                    if (_auth.getCurrentUser()!.email! != hostEmail) _listTile(context, 'T E R M I N A T E', Icons.delete_forever, terminate, caution: true),
                     _listTile(context, 'D A N G E R', Icons.dangerous, () => goToDanger(context), caution: true),
                     _listTile(context, 'L O G O U T', Icons.logout, logout, bottomPadding: true),
                   ],

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:memento/credential.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String password = Credential.PASSWORD;
 
   User? getCurrentUser() {
     return _auth.currentUser;
@@ -21,10 +23,10 @@ class AuthService {
       throw Exception("Error retrieving count_created: $e");
     }
     
-    await signUp("user$id@seele.com", "12345678", id);
+    await signUp("user$id${Credential.PROVIDER}", password, id);
   }
 
-  Future<void> signUp(String email, password, int id) async {
+  Future<void> signUp(String email, String password, int id) async {
     try {
       // create user
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
@@ -60,7 +62,7 @@ class AuthService {
       throw Exception("Error retrieving user email: ${e.code}");
     }
     
-    await signIn(email, '12345678');
+    await signIn(email, password);
   }
 
   Future<void> signIn(String email, String password) async {
@@ -149,7 +151,7 @@ class AuthService {
         }
       }); firestore.collection('stats').doc('user_base').set({'count_terminated': FieldValue.increment(1)}, SetOptions(merge: true));
 
-      AuthCredential credential = EmailAuthProvider.credential(email: email, password: '12345678');
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
       await getCurrentUser()!.reauthenticateWithCredential(credential);
       await getCurrentUser()!.delete();
       

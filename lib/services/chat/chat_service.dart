@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memento/model/message.dart';
+import 'package:memento/credential.dart';
 
 class ChatService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -127,7 +128,7 @@ class ChatService extends ChangeNotifier {
 
         Map<String, dynamic> data = snapshot.data() ?? {};
         return data.entries
-        .where((entry) => entry.value != 'fuad@seele.com')
+        .where((entry) => entry.value != Credential.HOST_EMAIL_FUAD)
         .map((entry) {
           return {
             'uid'  : entry.key,
