@@ -5,6 +5,7 @@ import 'package:memento/services/chat/chat_service.dart';
 import 'package:memento/services/auth/auth_service.dart';
 import 'package:memento/components/chat_bubble.dart';
 import 'package:memento/components/my_textfield.dart';
+import 'package:flutter/foundation.dart';
 
 class ChatPage extends StatefulWidget {
   final Map<String, String> hostMap;
@@ -29,7 +30,7 @@ class _ChatPageState extends State<ChatPage> {
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
-  FocusNode myFocusNode = FocusNode();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
-    myFocusNode.dispose();
+    focusNode.dispose();
     _messageController.dispose();
     super.dispose();
   }
@@ -165,7 +166,7 @@ class _ChatPageState extends State<ChatPage> {
               controller: _messageController,
               hintText: "share..",
               obscureText: false,
-              focusNode: myFocusNode,
+              focusNode: focusNode,
               floatingLabelBehavior: FloatingLabelBehavior.never,
             ),
           ),
@@ -180,7 +181,10 @@ class _ChatPageState extends State<ChatPage> {
             child: IconButton(
               color: Colors.white,
               iconSize: 16.0,
-              onPressed: sendMessage,
+              onPressed: () {
+                if (kIsWeb) focusNode.requestFocus();
+                sendMessage();
+              },
               icon: const Icon(
                 Icons.arrow_forward_ios_rounded,
               ),
