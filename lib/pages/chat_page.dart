@@ -114,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
       stream: _chatService.getMessages(widget.hostMap, widget.anonMap),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('Error${snapshot.error}');
+          return Text("Error building messages: ${snapshot.error}");
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -147,7 +147,7 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       alignment: alignment,  
       child: ChatBubble(
-        message: data["message"],
+        message: data['message'],
         isCurrentUser: isCurrentUser,
         messageId: doc.id,
       ),
@@ -164,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: MyTextField(
               controller: _messageController,
-              hintText: "share..",
+              hintText: "share a memento..",
               obscureText: false,
               focusNode: focusNode,
               floatingLabelBehavior: FloatingLabelBehavior.never,

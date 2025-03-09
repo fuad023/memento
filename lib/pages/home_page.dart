@@ -1,4 +1,3 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:memento/components/my_app_bar.dart';
 import 'package:memento/components/my_drawer.dart';
@@ -27,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
-  late final Map<String, String> hostMap; // { uid: email}
+  late final Map<String, String> hostMap;
   bool hostFound = false;
 
   void setHostMap(String uid) async {
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: MyAppBar(
-        title: "Home",
+        title: 'Home',
         actions: [
           CupertinoSwitch(
             thumbColor: Theme.of(context).colorScheme.primary,
@@ -74,7 +73,7 @@ class _HomePageState extends State<HomePage> {
       stream: _chatService.getAnonsStream(hostMap),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text("Error");
+          return Text("Error building user list: ${snapshot.error}");
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -156,7 +155,7 @@ class _HomePageState extends State<HomePage> {
       stream: _chatService.getUnreadMessageCountStream(hostMap, receiverMap, _authService.getCurrentUser()!.email!),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text("Error");
+          return Text("Error building messages: ${snapshot.error}");
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
