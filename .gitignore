@@ -44,3 +44,6 @@ app.*.map.json
 
 # Credentials
 /lib/credential.dart
+
+# Firebase Hosting
+.firebase/
