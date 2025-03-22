@@ -87,7 +87,7 @@ class _CodeLoginPageState extends State<CodeLoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Still interested to keep up the chat as dry like me?:(",
+          "Still interested in keeping the chat as dry as me?:(",
           style: TextStyle(
             color: Theme.of(context).colorScheme.inverseSurface,
             fontWeight: FontWeight.w300,

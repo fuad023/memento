@@ -88,7 +88,7 @@ class _AnonLoginPageState extends State<AnonLoginPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Pick up where you left?",
+            "Pick up from where you left off?",
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w300,
