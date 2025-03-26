@@ -1,6 +1,6 @@
 # Memento - Anonymous Chat with a Single Host  
 
-### **🚀 What is Memento?**  
+### **📬 What is Memento?**  
 Traditional social media MNCs have failed to uphold user trust by exploiting smart devices for surveillance. To tackle this, I built my own chat app—**Memento**.  
 
 In this app, **you can send me messages anonymously**. I am the **only host** (meaning I am the only one who receives messages). I intentionally did **not** allow others to become hosts in the web-app I’m deploying because that would mean storing their private conversations in my database. That’s exactly what big corporations do—collect user data. I don’t want that power, so I designed Memento differently.  
