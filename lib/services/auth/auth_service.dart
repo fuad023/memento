@@ -140,16 +140,17 @@ class AuthService {
       for (DocumentSnapshot hostDoc in hostsSnapshot.docs) {
         CollectionReference anonsCollection = firestore.collection('hosts').doc(hostDoc.id).collection('anons');
         DocumentSnapshot anonDoc = await anonsCollection.doc(email).get();
-        if (anonDoc.exists) /* await */ anonsCollection.doc(email).delete();
+        if (anonDoc.exists) await anonsCollection.doc(email).delete();
       }
 
-      /* await */ firestore.collection('users').count().get().then((snapshot) {
-        // 0 - even fuad host does not exist
-        // 1 - only fuad host exists
-        if (snapshot.count! < 2) {
-          firestore.collection('stats').doc('user_base').set({'count_created': 0}, SetOptions(merge: true));
-        }
-      }); firestore.collection('stats').doc('user_base').set({'count_terminated': FieldValue.increment(1)}, SetOptions(merge: true));
+      // /* await */ firestore.collection('users').count().get().then((snapshot) {
+      //   // 0 - even fuad host does not exist
+      //   // 1 - only fuad host exists
+      //   if (snapshot.count! < 2) {
+      //     firestore.collection('stats').doc('user_base').set({'count_created': 0}, SetOptions(merge: true));
+      //   }
+      // });
+      firestore.collection('stats').doc('user_base').set({'count_terminated': FieldValue.increment(1)}, SetOptions(merge: true));
 
       AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
       await getCurrentUser()!.reauthenticateWithCredential(credential);

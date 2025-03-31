@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memento/services/auth/auth_service.dart';
-import 'package:memento/pages/settings_page.dart';
 import 'package:memento/pages/delete_anons_page.dart';
 import 'package:memento/credential.dart';
 import 'package:flutter/services.dart';
@@ -19,61 +18,6 @@ class _MyDrawerState extends State<MyDrawer> {
   final _firestore = FirebaseFirestore.instance;
   final String hostEmail = Credential.HOST_EMAIL_FUAD;
   final String password = Credential.PASSWORD;
-
-  void logout() {
-    _auth.signOut();
-  }
-
-  void goToSettings(BuildContext context) {
-    Navigator.pop(context);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SettingsPage(),
-      ),
-    );
-  }
-
-  void hopIntoFuad() async {
-    await _auth.signOut();
-    try {
-      String uid = '';
-      try {
-        DocumentSnapshot docSnap = await _firestore.collection('users').doc(hostEmail).get();
-        if (docSnap.exists) {
-          uid = docSnap.get('uid');
-        }
-      } catch (e) { throw Exception('Error retrieving fuad email: $e'); }
-      await _auth.signInCode(uid);
-    } catch (e) {
-
-      await _auth.signUp(hostEmail, password, 0);
-      await _firestore.collection('hosts').doc(hostEmail).set({
-        'uid': _auth.getCurrentUser()!.email,
-        }, SetOptions(merge: true)
-      );
-
-      throw Exception("Sign in error to host (fuad): $e");
-    }
-  }
-
-  void terminate() async {
-    setState(() => isTerminating = true);
-    isTerminating = await _auth.terminateAnon();
-    if (!mounted) return;
-    setState(() {});
-  }
-
-  void goToDanger(BuildContext context) {
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DeleteAnonsPage(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,16 +59,14 @@ class _MyDrawerState extends State<MyDrawer> {
                         ],
                       ),
                     ),
-
-                    // _listTile(context, "S E T T I N G S", Icons.settings, () => goToSettings(context)),
                     // _listTile(context, "F U A D", Icons.person, hopIntoFuad),
                   ],
                 ),
                 Column(
                   children: [
                     if (_auth.getCurrentUser()!.email! != hostEmail) _listTile(context, 'T E R M I N A T E', Icons.delete_forever, terminate, caution: true),
-                    // _listTile(context, 'D A N G E R', Icons.dangerous, () => goToDanger(context), caution: true),
-                    _listTile(context, 'L O G O U T', Icons.logout, logout, bottomPadding: true),
+                    if (_auth.getCurrentUser()!.email! == hostEmail) _listTile(context, 'D A N G E R', Icons.dangerous, () => goToDanger(context), caution: true),
+                    _listTile(context, 'B O U N C E', Icons.logout, logout, bottomPadding: true),
                   ],
                 ),
               ],
@@ -213,4 +155,49 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
     );
   }
+
+  void hopIntoFuad() async {
+    await _auth.signOut();
+    try {
+      String uid = '';
+      try {
+        DocumentSnapshot docSnap = await _firestore.collection('users').doc(hostEmail).get();
+        if (docSnap.exists) {
+          uid = docSnap.get('uid');
+        }
+      } catch (e) { throw Exception('Error retrieving fuad email: $e'); }
+      await _auth.signInCode(uid);
+    } catch (e) {
+
+      await _auth.signUp(hostEmail, password, 0);
+      await _firestore.collection('hosts').doc(hostEmail).set({
+        'uid': _auth.getCurrentUser()!.email,
+        }, SetOptions(merge: true)
+      );
+
+      throw Exception("Sign in error to host (fuad): $e");
+    }
+  }
+
+  void terminate() async {
+    setState(() => isTerminating = true);
+    isTerminating = await _auth.terminateAnon();
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  void goToDanger(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DeleteAnonsPage(),
+      ),
+    );
+  }
+
+  void logout() {
+    _auth.signOut();
+  }
+
 }

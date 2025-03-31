@@ -71,3 +71,5 @@ flutter run
 
 ### **📌 Disclaimer**
 Use it responsibly. I do not store personal data beyond what’s necessary for functionality. If you set up your own host version, you are fully responsible for handling user data securely.  
+
+Is this app absolutely secure? Not entirely. Both the frontend and backend are provided by Google. However, I still have an extra layer of control over all the data.  
