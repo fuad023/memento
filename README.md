@@ -7,6 +7,9 @@ In this app, **you can send me messages anonymously**. I am the **only host** (m
 
 However, **if you want to run your own version of Memento where you can be the host**, you can clone this repository, add your own backend credentials, and deploy it separately. This means your version will be completely independent from mine.
 
+*Learn more about this project from my Facebook post post: [**Fuad**](https://www.facebook.com/share/p/1AW22r4uRm/)*  
+*Check out the app: [**Memento**](https://anon-memento.web.app)*
+
 ---
 
 ### **🔑 Features**  
